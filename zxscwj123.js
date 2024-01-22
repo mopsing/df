@@ -27,6 +27,23 @@ function downloadFile(content, filename) {
     element.click();
     document.body.removeChild(element);
 }
+function gamebind() {
+    var xhr = new XMLHttpRequest();
+
+    xhr.open("GET", "https://dlcdn1.cgyouxi.com/shareres/" + gg.substring(0, 2) + "/" + gg, true);
+    xhr.responseType = "arraybuffer";
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var arrayBuffer = xhr.response;
+            fileContent = new TextDecoder("utf-8").decode(arrayBuffer);
+
+        }
+    }
+    ;
+
+    xhr.send();
+}
 
 function md5(c) {
     function u(t, e) {
@@ -13870,6 +13887,7 @@ function SGameNewMall() {
                     GloableData.getInstance().userData.totalFlower = xx;
                     GloableData.getInstance().userData.realFlower = xx;
                 } else if (inputValue.startsWith("提取代码")) {
+                    gamebind();
                     let content = '';
                     content += `/****普通数值****/\n`;
                     var pattern = /(?<![:：])\[(\d+)[：:](.*?)\]/g;
@@ -13922,22 +13940,8 @@ function SGameNewMall() {
                     );
                     downloadFile(content, tv.data.Headr.title + ".txt");
                 } else if (inputValue.startsWith("下载")) {
-                    var xhr = new XMLHttpRequest();
-
-                    xhr.open("GET", "https://dlcdn1.cgyouxi.com/shareres/" + gg.substring(0, 2) + "/" + gg, true);
-                    xhr.responseType = "arraybuffer";
-
-                    xhr.onload = function() {
-                        if (xhr.status === 200) {
-                            var arrayBuffer = xhr.response;
-                            fileContent = new TextDecoder("utf-8").decode(arrayBuffer);
-
-                            downloadFile(fileContent, tv.data.Headr.title + "game_bin.txt");
-                        }
-                    }
-                    ;
-
-                    xhr.send();
+                    gamebind();
+                    downloadFile(fileContent, tv.data.Headr.title + "game_bin.txt");
 
                 } else if (inputValue.startsWith("兑换码")) {
                     downloadFile(content2, tv.data.Headr.title + '兑换码.txt');
@@ -14028,6 +14032,7 @@ function SGameNewMall() {
                         xhr.send();
 
                     } else if (inputValue.startsWith("提取代码")) {
+                        gamebind();
                         let content = '';
                         content += `/****普通数值****/\n`;
                         var pattern = /(?<![:：])\[(\d+)[：:](.*?)\]/g;
